@@ -2,5 +2,13 @@ __pycache__/
 *.pyc
 *.csv
 *.png
+model_comparison_outputs*/
+model_comparison_loan_clustered/
+model_comparison_creditcard/
+model_comparison_creditcard_clustered/
+model_comparison_creditcard_clustered_only/
+model_comparison_creditcard_smote/
+comparison_outputs/
+comparison_outputs_real/
 desktop.ini
 .ipynb_checkpoints/

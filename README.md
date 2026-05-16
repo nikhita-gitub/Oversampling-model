@@ -57,6 +57,10 @@ For mixed-type tables such as the loan dataset, the SMOTE baseline uses `SMOTENC
 
 ## Datasets
 
+The repository does not include the dataset CSV files. To run the experiments, place your datasets locally and pass their paths with `--csv-path`.
+
+Examples used during development:
+
 - `loan_approved_csv.csv`
 - `creditcard.csv`
 
@@ -78,6 +82,12 @@ Run it with a separate output folder:
 
 ```bash
 python evaluate_oversampling_models.py --output-dir model_comparison_outputs_full
+```
+
+Run it on a local dataset file:
+
+```bash
+python evaluate_oversampling_models.py --csv-path path/to/your_dataset.csv
 ```
 
 Compare copula vs hybrid distribution behavior:
@@ -105,18 +115,9 @@ The evaluation script saves:
 - `minority_f1_comparison.png`
 - `balanced_accuracy_comparison.png`
 
-Recent checked-in outputs include:
-
-- `model_comparison_outputs_full/`
-- `model_comparison_loan_clustered/`
-- `model_comparison_creditcard/`
-- `model_comparison_creditcard_clustered/`
-- `model_comparison_creditcard_smote/`
-- `comparison_outputs_real/`
-
 ## Results Snapshot
 
-The table below comes from [`model_comparison_outputs_full/dataset_summary.csv`](./model_comparison_outputs_full/dataset_summary.csv), generated on the loan dataset with all six methods.
+Example local run on the loan dataset with all six methods:
 
 | Dataset | Mean Accuracy | Mean Balanced Accuracy | Mean Minority F1 |
 | --- | ---: | ---: | ---: |
@@ -127,7 +128,7 @@ The table below comes from [`model_comparison_outputs_full/dataset_summary.csv`]
 | clustered_hybrid | 0.7995 | 0.7555 | 0.6636 |
 | smote | 0.8022 | 0.7526 | 0.6608 |
 
-Per-model winners by minority F1 from [`model_comparison_outputs_full/best_by_model_f1.csv`](./model_comparison_outputs_full/best_by_model_f1.csv):
+Per-model winners by minority F1 from the same local run:
 
 | Model | Best Dataset | Minority F1 |
 | --- | --- | ---: |
@@ -135,15 +136,11 @@ Per-model winners by minority F1 from [`model_comparison_outputs_full/best_by_mo
 | Random Forest | original | 0.6866 |
 | XGBoost | hybrid | 0.6944 |
 
-On this checked-in loan run, the copula dataset produced the best average minority F1 across models, while the original dataset retained the best average accuracy. That tradeoff is visible in the plots below.
+In that local run, the copula dataset produced the best average minority F1 across models, while the original dataset retained the best average accuracy.
 
 The higher accuracy for `original` should not be treated as proof that the imbalanced dataset is better. In imbalanced classification, accuracy can stay high even when the model performs poorly on the minority class. For example, if a dataset has 90 samples from class A and 10 from class B, a model that predicts every case as class A can still achieve about 90% accuracy while completely failing to identify class B. Because of that, `balanced_accuracy`, minority-class `recall`, and minority-class `f1` are more informative than raw accuracy for this project.
 
-![Loan minority F1 comparison](./model_comparison_outputs_full/minority_f1_comparison.png)
-
-The repository also includes a direct distribution comparison between the original minority class and the synthetic outputs from the copula and hybrid methods:
-
-![Copula vs hybrid normality comparison](./comparison_outputs_real/normality_comparison.png)
+Generated CSV summaries and PNG plots are intentionally excluded from the repository by `.gitignore`, so you should expect those artifacts to appear only after running the scripts locally.
 
 ## Tests
 
@@ -167,14 +164,7 @@ The test suite covers:
 |-- tests/
 |-- Oversampling.ipynb
 |-- Final.ipynb
-|-- loan_approved_csv.csv
-|-- creditcard.csv
-|-- model_comparison_outputs_full/
-|-- model_comparison_loan_clustered/
-|-- model_comparison_creditcard/
-|-- model_comparison_creditcard_clustered/
-|-- model_comparison_creditcard_smote/
-`-- comparison_outputs_real/
+`-- .gitignore
 ```
 
 ## Next Steps
